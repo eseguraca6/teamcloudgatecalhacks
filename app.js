@@ -4,9 +4,10 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var mongoose = require('mongoose');
+var multer = require('multer');
 
-var routes = require('./routes/index');
-var users = require('./routes/users');
+var upload = multer({dest: './public/uploads'});
 
 var app = express();
 
@@ -19,8 +20,10 @@ app.set('view engine', 'jade');
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(multer({ dest: './public/uploads'}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+require('./config/database.js')(app, mongoose);
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
