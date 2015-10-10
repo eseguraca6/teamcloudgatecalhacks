@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+  <head>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+  <link rel="stylesheet" type="text/css"
+    href="https://js.api.here.com/v3/3.0/mapsjs-ui.css" />
+  <script type="text/javascript" charset="UTF-8"
+    src="https://js.api.here.com/v3/3.0/mapsjs-core.js"></script>
+  <script type="text/javascript" charset="UTF-8"
+    src="https://js.api.here.com/v3/3.0/mapsjs-service.js"></script>
+  <script type="text/javascript" charset="UTF-8"
+    src="https://js.api.here.com/v3/3.0/mapsjs-ui.js"></script>
+  <script type="text/javascript" charset="UTF-8"
+    src="https://js.api.here.com/v3/3.0/mapsjs-mapevents.js"></script>
+  </head>
+<body>
+  <div id="map" style="width: 100%; height: 500px"; background = "grey"/>
+  <script  type="text/javascript" charset="UTF-8" >
+
+//var ucla = new H.marker.addMarket({lat : 34.07, lng : -118.444});
+
+function mapcal(map){
+  map.setCenter({lat: 37.87, lng: -122.27});
+  map.setZoom(14);
+}
+      // Initialize the platform object:
+      var platform = new H.service.Platform({
+        app_id: 'evk3TrU4UcresAseG8Da',
+        app_code: 'z4yYohROherMZ57eHTsQUg',
+         useCIT: true,
+         useHTTPS: true
+      });
+
+ function addMarket(group, coord, html) {
+  var marker = new H.map.Marker(coordinate);
+  market.setData(html)
+  group.addObject(marker);
+}
+function addinfobubble(map)
+{
+  var group = new H.map.Group();
+  map.addObject(group);
+
+  //adding tapping from mouse
+  group.addEventListener('tap', function(evt) { 
+    var bubble = new H.ui.InfoBubble(evt.target.getPosition(), { 
+      content : evt.target.getData()
+    });
+    ui.addBubble(bubble);
+}, false);
+
+    addMarker(group, {lat : 34.0722, lng : -118.444}, 
+     '<div><a href=\'http://www.ucla.edu\' >UCLA</a></div>'
+    ); 
+}
+
+
+      // Obtain the default map types from the platform object
+      var maptypes = platform.createDefaultLayers();
+
+      // Instantiate (and display) a map object:
+      var map = new H.Map(document.getElementById('map'),
+                    //nokia.maps.map.Display(document.getElementById)
+        maptypes.normal.map, {center : {lat: 37.87, lng: -122.27}, zoom : 4 });
+
+      var behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(map)); 
+
+      var ui = H.ui.UI.createDefault(map, maptypes, 'en-US');
+      var zoom = H.ui.getControl('zoom'); //for zooming in. 
+      var scalebar = H.ui.getControl('scalebar');
+      //var panorama = H.ui.getControl('panorama');
+
+    
+      //useImperialMeasurements(map, maptypes);
+      //map.addObject(ucla);
+      addinfobubble(map);
+      mapcal(map);
+    </script>
+  </body>
+</html>
