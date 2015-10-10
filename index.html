@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
-  <head>
-        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+<head>
+  <meta name="viewport" content="initial-scale=1.0, width=device-width" />
   <link rel="stylesheet" type="text/css"
     href="https://js.api.here.com/v3/3.0/mapsjs-ui.css" />
   <script type="text/javascript" charset="UTF-8"
@@ -12,69 +12,81 @@
     src="https://js.api.here.com/v3/3.0/mapsjs-ui.js"></script>
   <script type="text/javascript" charset="UTF-8"
     src="https://js.api.here.com/v3/3.0/mapsjs-mapevents.js"></script>
-  </head>
+
+</head>
 <body>
-  <div id="map" style="width: 100%; height: 500px"; background = "grey"/>
+  <div id="map" style="width: 100%; height: 400px; background: grey" />
   <script  type="text/javascript" charset="UTF-8" >
-
-//var ucla = new H.marker.addMarket({lat : 34.07, lng : -118.444});
-
-function mapcal(map){
-  map.setCenter({lat: 37.87, lng: -122.27});
-  map.setZoom(14);
-}
-      // Initialize the platform object:
-      var platform = new H.service.Platform({
-        app_id: 'evk3TrU4UcresAseG8Da',
-        app_code: 'z4yYohROherMZ57eHTsQUg',
-         useCIT: true,
-         useHTTPS: true
-      });
-
- function addMarket(group, coord, html) {
+    
+/**
+ * Creates a new marker and adds it to a group
+ * @param {H.map.Group} group       The group holding the new marker
+ * @param {H.geo.Point} coordinate  The location of the marker
+ * @param {String} html             Data associated with the marker
+ */
+function addMarkerToGroup(group, coordinate) {
   var marker = new H.map.Marker(coordinate);
-  market.setData(html)
+  // add custom data to the marker
+  //marker.setData(html);
   group.addObject(marker);
 }
-function addinfobubble(map)
-{
+
+/**
+ * Add two markers showing the position of Liverpool and Manchester City football clubs.
+ * Clicking on a marker opens an infobubble which holds HTML content related to the marker.
+ * @param  {H.Map} map      A HERE Map instance within the application
+ */
+
+function addInfoBubble(map) {
   var group = new H.map.Group();
   map.addObject(group);
 
-  //adding tapping from mouse
-  group.addEventListener('tap', function(evt) { 
-    var bubble = new H.ui.InfoBubble(evt.target.getPosition(), { 
-      content : evt.target.getData()
-    });
-    ui.addBubble(bubble);
-}, false);
+  addMarkerToGroup(group, {lat: 37.87, lng: -122.27});
 
-    addMarker(group, {lat : 34.0722, lng : -118.444}, 
-     '<div><a href=\'http://www.ucla.edu\' >UCLA</a></div>'
-    ); 
+  addMarkerToGroup(group, {lat : 38.8977, lng : -77.0365});
+
+  addMarkerToGroup(group, {lat: 34.07222, lng: -118.444});
+
+
+
+var locations = [ {lat: 41.7897, lng: -87.5997}, {lat : 41.3111, lng : -72.9267}, {lat: 51.5139, lng: -0.1167} ];
+
+for( i = 0; i < locations.length; i++)
+{
+  addMarkerToGroup(group, locations[i]);
+}
 }
 
 
-      // Obtain the default map types from the platform object
-      var maptypes = platform.createDefaultLayers();
+/**
+ * Boilerplate map initialization code starts below:
+ */
 
-      // Instantiate (and display) a map object:
-      var map = new H.Map(document.getElementById('map'),
-                    //nokia.maps.map.Display(document.getElementById)
-        maptypes.normal.map, {center : {lat: 37.87, lng: -122.27}, zoom : 4 });
+// initialize communication with the platform
+var platform = new H.service.Platform({
+  app_id: 'evk3TrU4UcresAseG8Da',
+  app_code: 'z4yYohROherMZ57eHTsQUg',
+  useCIT: true,
+  useHTTPS: true
+});
+var defaultLayers = platform.createDefaultLayers();
 
-      var behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(map)); 
+// initialize a map - this map is centered over Europe
+var map = new H.Map(document.getElementById('map'),
+  defaultLayers.normal.map,{
+  center: {lat: 34.07222, lng: -118.444},
+  zoom: 7
+});
 
-      var ui = H.ui.UI.createDefault(map, maptypes, 'en-US');
-      var zoom = H.ui.getControl('zoom'); //for zooming in. 
-      var scalebar = H.ui.getControl('scalebar');
-      //var panorama = H.ui.getControl('panorama');
+// MapEvents enables the event system
+// Behavior implements default interactions for pan/zoom (also on mobile touch environments)
+var behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(map));
 
-    
-      //useImperialMeasurements(map, maptypes);
-      //map.addObject(ucla);
-      addinfobubble(map);
-      mapcal(map);
-    </script>
-  </body>
+// create default UI with layers provided by the platform
+var ui = H.ui.UI.createDefault(map, defaultLayers);
+
+// Now use the map as required...
+addInfoBubble(map);
+  </script>
+</body>
 </html>
