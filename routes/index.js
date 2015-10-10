@@ -8,7 +8,7 @@ router.get('/', function(req, res, next) {
     var images = null;
 
     // Send it to the map
-    res.render('index', { photos: photos });
+    res.render('index', { images: images });
 });
 
 module.exports = router;

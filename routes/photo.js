@@ -1,9 +1,14 @@
-var express = require('express');
+var express = require('express')
+var multer  = require('multer')
 var router = express.Router();
+var upload = multer({ dest: './public/uploads' })
 
-router.post('/photo', function(req, res) {
-    // Take the photo from the form, save it to the database
+var app = express()
 
-    // Send the information to the front end
-    res.render('index');
-});
+app.post('/profile', upload.single('avatar'), function (req, res, next) {
+  // req.file is the `avatar` file
+  // req.body will hold the text fields, if there were any
+
+
+  res.redirect('index');
+})
